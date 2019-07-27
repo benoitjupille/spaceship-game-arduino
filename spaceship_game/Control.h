@@ -16,7 +16,6 @@ class Control
     /**
      * constructor
      */
-     Control();
      Control(int pinNumber);
     
     /**

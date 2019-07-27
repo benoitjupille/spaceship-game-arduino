@@ -1,5 +1,6 @@
 #include "Graphics.h"
 #include "Button.h"
+#include "Led.h"
 
 Graphics graphics;
 
@@ -12,28 +13,22 @@ Button buttons[3] = {
   Button(4)
 };
 
-
 /**
  * LEDS for the output lights
  */
-int leds[] = {
-  5, 6, 7
-};
-
-boolean flags[] = {
-  false, false, false
+Led leds[3] = {
+  Led(5),
+  Led(6),
+  Led(7)
 };
 
 int lengthOfControls = 2;
 
 void setup() {
-  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-  if(!graphics.init()) { // Address 0x3C for 128x32
+  if(!graphics.init()) {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
-
-  initLeds();
 
   graphics.erase();
   graphics.play();
@@ -43,7 +38,6 @@ void setup() {
 
 void loop() {
   checkState();
-  checkLights();
   delay(200);
  
   if (isReadyToLaunch()) {
@@ -51,27 +45,21 @@ void loop() {
     delay(1000);
 
     for (int i = 0; i < lengthOfControls; i++) {
-      flags[i] = false;
+      leds[i].off();
     }
 
     graphics.drawSpaceship(0);
   }
 }
 
-/*
- * Initialize the leds states
+/**
+ * Is the spaceship ready to be launch ?
  */
-void initLeds(void) {
-  for (int i = 0; i < lengthOfControls; i++) {
-    pinMode(leds[i], OUTPUT);
-  }
-}
-
 boolean isReadyToLaunch(void) {
   boolean flag = true;
 
   for (int i = 0; i < lengthOfControls; i++) {
-    if (!flags[i]) {
+    if (!leds[i].isOn()) {
       flag = false;
     }
   }
@@ -85,16 +73,7 @@ boolean isReadyToLaunch(void) {
 void checkState(void) {
   for (int i=0; i<lengthOfControls; i++) {
     if (buttons[i].action()) {
-      flags[i] = !flags[i];
+      leds[i].toggle();
     }
-  }
-}
-
-/**
- * Change the led states according to flag states
- */
-void checkLights(void) {
-  for (int i=0; i<lengthOfControls; i++) {
-    digitalWrite(leds[i], flags[i]);
   }
 }
