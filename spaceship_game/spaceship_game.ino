@@ -73,6 +73,7 @@ boolean isReadyToLaunch(void) {
 void checkState(void) {
   for (int i=0; i<lengthOfControls; i++) {
     if (buttons[i].action()) {
+      //digitalWrite(5, HIGH);
       leds[i].toggle();
     }
   }

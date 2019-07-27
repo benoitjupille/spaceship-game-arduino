@@ -24,7 +24,7 @@ boolean Led::isOn()
  */
 void Led::toggle()
 {
-  flag != flag;
+  flag = !flag;
 
   if (flag) {
     on();
