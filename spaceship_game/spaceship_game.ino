@@ -1,10 +1,17 @@
 #include "Graphics.h"
+#include "Button.h"
 
 Graphics graphics;
 
-int buttons[] = {
-  2, 3, 4
+/**
+ * Initialize buttons
+ */
+Button buttons[3] = {
+  Button(2),
+  Button(3),
+  Button(4)
 };
+
 
 /**
  * LEDS for the output lights
@@ -27,7 +34,6 @@ void setup() {
   }
 
   initLeds();
-  initButtons();
 
   graphics.erase();
   graphics.play();
@@ -61,17 +67,6 @@ void initLeds(void) {
   }
 }
 
-/**
- * Initialize buttons
- *
- * This way, we avoid a use of resistors
- */
-void initButtons(void) {
-  for (int i = 0; i < lengthOfControls; i++) {
-    pinMode(buttons[i], INPUT);
-  }
-}
-
 boolean isReadyToLaunch(void) {
   boolean flag = true;
 
@@ -85,11 +80,11 @@ boolean isReadyToLaunch(void) {
 }
 
 /**
- * Check the state of flags changed by pressuring buttons
+ * Check the state of flags changed by pressing buttons
  */
 void checkState(void) {
   for (int i=0; i<lengthOfControls; i++) {
-    if (digitalRead(buttons[i]) == HIGH) {
+    if (buttons[i].action()) {
       flags[i] = !flags[i];
     }
   }
@@ -102,13 +97,4 @@ void checkLights(void) {
   for (int i=0; i<lengthOfControls; i++) {
     digitalWrite(leds[i], flags[i]);
   }
-}
-
-/**
- * Returns the length of an array
- *
- * @param array
- */
-int lengthOf(int a[]) {
-  return sizeof(a) / sizeof(a[0]);
 }

@@ -2,6 +2,12 @@
 #define GRAPHICS_H
 
 /**
+ * Handles all graphics, bitmaps and animations
+ * of the game
+ */
+
+
+/**
  * screen width
  */
 extern int screenWidth;
