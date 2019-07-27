@@ -20,8 +20,6 @@ boolean flags[] = {
 int lengthOfControls = 2;
 
 void setup() {
-  
-
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if(!graphics.init()) { // Address 0x3C for 128x32
     Serial.println(F("SSD1306 allocation failed"));

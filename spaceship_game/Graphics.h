@@ -1,20 +1,28 @@
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
+
+/**
+ * screen width
+ */
+extern int screenWidth;
+
+/**
+ * scren height
+ */
+extern int screenHeight;
+
+/**
+ * Output led reset for the screen
+ */
+extern int oledReset;
+
 class Graphics
 {
   private:
     /**
-     * screen width
-     */
-    int screenWidth = 128;
-    
-    /**
-     * scren height
-     */
-    int screenHeight = 32;
-    
-    /**
      * bitmap container width
      */
-    int bitmapWidth = 22;
+    int bitmapWidth = 16;
     
     /**
      * bitmap container height
@@ -25,40 +33,6 @@ class Graphics
      * Speed of the animations
      */
     int animationSpeed = 15;
-    
-    /**
-     * Output led reset for the screen
-     */
-    int oledReset = 4;
-    
-    /**
-     * The bitmap of the spaceship
-     */
-    const unsigned char PROGMEM bitmap[] = 
-    {
-      B00000001, B10000000,
-      B00000010, B01000000,
-      B00000100, B00100000,
-      B00000100, B00100000,
-      B00001000, B00010000,
-      B00001000, B00010000,
-      B00001111, B11110000,
-      B00001110, B01110000,
-      B00001100, B00110000,
-      B00001100, B00110000,
-      B00001100, B00110000,
-      B00001110, B01110000,
-      B00001111, B11110000,
-      B00001111, B11110000,
-      B00001000, B00010000,
-      B00001111, B11110000,
-      B00001111, B11110000,
-      B00011111, B11111000,
-      B00111111, B11111100,
-      B01111111, B11111110,
-      B11111111, B11111111,
-      B11111000, B00011111,
-    };
 
     /**
      * Declare the screen type
@@ -98,3 +72,4 @@ class Graphics
      */
     void fireOn();
 };
+#endif

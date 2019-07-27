@@ -1,14 +1,47 @@
 #include "Graphics.h"
+
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
 
 /**
- * Declare the screen type
+ * screen width
  */
-void Graphics::declareScreen()
+int screenWidth = 128;
+
+/**
+ * scren height
+ */
+int screenHeight = 32;
+
+/**
+ * Output led reset for the screen
+ */
+int oledReset = 4;
+
+Adafruit_SSD1306 display(screenWidth, screenHeight, &Wire, oledReset);
+
+/**
+ * The bitmap of the spaceship
+ */
+static const unsigned char PROGMEM bitmap[] = 
 {
-  Adafruit_SSD1306 display(screenWidth, screenHeight, &Wire, oledReset);
-}
+  B00000001, B10000000,
+ B00000010, B01000000,
+ B00000100, B00100000,
+ B00000111, B11100000,
+ B00000111, B11100000,
+ B00000111, B11100000,
+ B00000110, B01100000,
+ B00000110, B01100000,
+ B00000111, B11100000,
+ B00000111, B11100000,
+ B00000111, B11100000,
+ B00001111, B11110000,
+ B00010111, B11101000,
+ B00100100, B00100100,
+ B01000111, B11100010,
+ B01111000, B00011110,
+};
 
 /**
  * Init the display. Returns false if a problem occured
@@ -16,10 +49,9 @@ void Graphics::declareScreen()
  * 
  * @return boolean
  */
-boolean init()
+boolean Graphics::init()
 {
-  declareScreen();
-  return display.begin(SSD1306_SWITCHCAPVCC, 0x3C)
+  return display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
 }
 
 /**
@@ -47,7 +79,7 @@ void Graphics::drawSpaceship(int altitude)
 
   display.drawBitmap(
     (display.width()  - bitmapWidth) / 2,
-    (display.height() - bitmapHeight) - altitude,
+    display.height() - bitmapHeight - altitude,
     bitmap,
     bitmapWidth,
     bitmapHeight,
@@ -63,7 +95,7 @@ void Graphics::liftOff()
 {
   fireOn();
   for(int i=0; i<display.height() + 2; i+=2) {
-    drawSpaceShip(i);
+    drawSpaceship(i);
     delay(500 - (animationSpeed * i));
   }
 }
