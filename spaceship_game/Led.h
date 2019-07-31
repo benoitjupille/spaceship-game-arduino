@@ -27,6 +27,7 @@ class Led
     /**
      * Constructor
      */
+    Led();
     Led(int pinNumber);
     
     /**

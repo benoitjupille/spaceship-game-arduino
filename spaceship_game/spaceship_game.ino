@@ -1,26 +1,16 @@
 #include "Graphics.h"
-#include "Button.h"
-#include "Led.h"
 #include "Timer.h"
+#include "Slot.h"
 
 Graphics graphics;
 
 /**
- * Initialize buttons
+ * Initialize Slots
  */
-Button buttons[3] = {
-  Button(2),
-  Button(3),
-  Button(4)
-};
-
-/**
- * LEDS for the output lights
- */
-Led leds[3] = {
-  Led(5),
-  Led(6),
-  Led(7)
+Slot slots[3] = {
+  Slot(2, 5),
+  Slot(3, 6),
+  Slot(4, 7)
 };
 
 /**
@@ -80,7 +70,7 @@ void loop() {
   
   if (isReadyToLaunch()) {
     graphics.liftOff();
-    delay(1000);
+    delay(600);
 
     reset();
     
@@ -89,7 +79,7 @@ void loop() {
 
   // Make the current light blinking every 4th
   if (timer.tick()) {
-    leds[index()].toggle();
+    slots[index()].led.toggle();
   }
 }
 
@@ -100,7 +90,7 @@ void reset()
 
   // We turn off the lights, and put all played slots to false
   for (int i = 0; i < lengthOfControls; i++) {
-    leds[i].off();
+    slots[i].led.off();
     playedSlots[i] = false;
   }
 
@@ -133,11 +123,11 @@ boolean isReadyToLaunch(void) {
  * Check the state of flags changed by pressing buttons
  */
 void checkState(void) {
-  if (!buttons[index()].action()) {
+  if (!slots[index()].button.action()) {
     return;
   }
 
-  leds[index()].on();
+  slots[index()].led.on();
   
   // Light is on, we give the player a break
   delay((rand() % 2000) + 1000);
