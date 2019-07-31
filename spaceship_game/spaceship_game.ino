@@ -112,6 +112,7 @@ void reset()
   
   // Put back timer to zero
   timer.reset();
+  chronometer.reset();
 
   // We turn off the lights, and put all played slots to false
   for (int i = 0; i < lengthOfControls; i++) {
