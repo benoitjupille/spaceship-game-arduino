@@ -44,6 +44,20 @@ int playingSlot = 0;
  */
 Timer timer;
 
+/**
+ * Chronometer to measure the timeframe
+ * of possible player action
+ * 
+ * When a light starts blinking, the player will have
+ * a certain limit of time to react.
+ */
+Timer chronometer;
+
+/**
+ * Player has lost
+ */
+boolean gameOver = false;
+
 int lengthOfControls = 2;
 
 void setup() {
@@ -52,6 +66,9 @@ void setup() {
     for(;;); // Don't proceed, loop forever
   }
 
+  timer.recordPreviousTime();
+  chronometer.recordPreviousTime();
+  
   graphics.erase();
   graphics.play();
  
@@ -66,6 +83,12 @@ void setup() {
  */
 void loop() {
   delay(100); 
+
+  if (gameOver) {
+    reset();
+    return;
+  }
+  
   checkState();
   
   if (isReadyToLaunch()) {
@@ -85,6 +108,8 @@ void loop() {
 
 void reset()
 {
+  gameOver = false;
+  
   // Put back timer to zero
   timer.reset();
 
@@ -124,6 +149,9 @@ boolean isReadyToLaunch(void) {
  */
 void checkState(void) {
   if (!slots[index()].button.action()) {
+    if (chronometer.interval() > 3000) {
+      gameOver = true;
+    }
     return;
   }
 
@@ -135,12 +163,18 @@ void checkState(void) {
   if (playingSlot <= lengthOfControls) {
     playedSlots[playingSlot] = true;
     playingSlot = playingSlot + 1;
+
+    chronometer.recordPreviousTime();
+
     return;
   }
 
   randomizeIndexes();
 }
 
+/**
+ * Returns the current playing slot index
+ */
 int index()
 {
   return indexes[playingSlot];
