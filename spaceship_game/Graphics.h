@@ -77,5 +77,10 @@ class Graphics
      * Blink the screen to make "start fire" effect
      */
     void fireOn();
+
+    /**
+     * Draw a game over screen
+     */
+    void drawGameOver();
 };
 #endif

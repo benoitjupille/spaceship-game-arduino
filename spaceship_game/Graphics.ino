@@ -114,3 +114,17 @@ void Graphics::fireOn()
   display.invertDisplay(false);
   delay(50);
 }
+
+/**
+ * Draw a game over screen
+ */
+void Graphics::drawGameOver()
+{
+  display.setTextSize(2);      // Normal 1:1 pixel scale
+  display.setTextColor(WHITE); // Draw white text
+  display.setCursor(0, 0);     // Start at top-left corner
+  display.cp437(true);         // Use full 256 char 'Code Page 437' font
+  display.clearDisplay(); 
+  display.println(F("GAME OVER"));
+  display.display();
+}

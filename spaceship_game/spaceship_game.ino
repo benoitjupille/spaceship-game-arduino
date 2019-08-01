@@ -10,7 +10,7 @@ Graphics graphics;
 Slot slots[3] = {
   Slot(2, 5),
   Slot(3, 6),
-  Slot(4, 7)
+  Slot(8, 7)
 };
 
 /**
@@ -58,7 +58,7 @@ Timer chronometer;
  */
 boolean gameOver = false;
 
-int lengthOfControls = 2;
+int lengthOfControls = 3;
 
 void setup() {
   if(!graphics.init()) {
@@ -82,9 +82,10 @@ void setup() {
  * If I put the begin, the compiler won't pass
  */
 void loop() {
-  delay(100); 
-
+  delay(200);
   if (gameOver) {
+    graphics.drawGameOver();
+    delay(1000);
     reset();
     return;
   }
@@ -101,7 +102,7 @@ void loop() {
   }
 
   // Make the current light blinking every 4th
-  if (timer.tick()) {
+  if (timer.tickQuarter()) {
     slots[index()].led.toggle();
   }
 }
@@ -149,6 +150,11 @@ boolean isReadyToLaunch(void) {
  * Check the state of flags changed by pressing buttons
  */
 void checkState(void) {
+  if (wrongButtonIsPressed()) {
+    gameOver = true;
+    return;
+  }
+  
   if (!slots[index()].button.action()) {
     if (chronometer.interval() > 3000) {
       gameOver = true;
@@ -171,6 +177,23 @@ void checkState(void) {
   }
 
   randomizeIndexes();
+}
+
+/**
+ * Check if wrong button is pressed
+ */
+boolean wrongButtonIsPressed()
+{
+  for (int i = 0; i < lengthOfControls; i++) {
+    if (
+      i != playingSlot
+      && slots[i].button.action()
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**
